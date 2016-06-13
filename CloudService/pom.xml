@@ -17,6 +17,7 @@
 
         <camel.version>2.15.1.redhat-621084</camel.version>
         <kura.version>1.0.7</kura.version>
+        <gson.version>2.3.1</gson.version>
         <exec.maven.plugin.version>1.3.2</exec.maven.plugin.version>
         <felix.maven.bundle.plugin.version>2.5.3</felix.maven.bundle.plugin.version>
         <maven.compiler.plugin.version>3.2</maven.compiler.plugin.version>
@@ -107,6 +108,21 @@
             <artifactId>camel-jetty</artifactId>
             <version>${camel.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-http4</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-gson</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.camel</groupId>
@@ -139,11 +155,6 @@
 	       <version>${camel.version}</version>
 	    </dependency>
 	    
-        <dependency>
-		    <groupId>org.apache.camel</groupId>
-		    <artifactId>camel-mqtt</artifactId>
-		    <version>${camel.version}</version>
-		</dependency>
     </dependencies>
 
 	<distributionManagement>

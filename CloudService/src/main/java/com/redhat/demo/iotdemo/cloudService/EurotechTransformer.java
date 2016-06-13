@@ -1,25 +1,31 @@
 
 package com.redhat.demo.iotdemo.cloudService;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.redhat.demo.iotdemo.cloudService.kura.KuraPayload;
+import com.redhat.demo.iotdemo.cloudService.kura.Metric;
+import com.redhat.demo.iotdemo.cloudService.kura.Metrics;
+import com.redhat.demo.iotdemo.cloudService.kura.Payload;
 import org.apache.camel.Exchange;
 import org.apache.camel.Handler;
-import org.eclipse.kura.message.KuraPayload;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EurotechTransformer {
 	
 	@Handler
     public void transform(String body,  Exchange exchange) throws Exception {
-        KuraPayload payload = new KuraPayload();
-        
-        payload.addMetric("temperature", new Random().nextInt(20));
-        
-        exchange.getIn().setBody(payload);
+       List<Metric> metricList = new ArrayList<>();
+       metricList.add(new Metric("Ambient", "double", "25.12345")); // type is one of string, double, int, float, long, boolean
+       metricList.add(new Metric("Humidity", "float", "32.287501"));
+       metricList.add(new Metric("Light", "double", "87.23"));
+
+       KuraPayload payload = new KuraPayload()
+             .withTopic("Red-Hat/ccustine-rhel72vm/summit-lab/test/sensor1")
+             .withPayload(new Payload()
+                   .withMetrics(new Metrics(metricList))
+             );
+       exchange.getIn().setBody(payload);
     }
 }
 

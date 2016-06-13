@@ -24,13 +24,21 @@
   	<!--Initiate access to properties -->
   	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
- 	<!-- Route from local MQTT-Broker to local JMS Broker --><camelContext xmlns="http://camel.apache.org/schema/spring">
-  <propertyPlaceholder location="classpath:org/apache/camel/component/properties/myprop.properties" id="properties"/>
-  <route id="messagesFromCEP">
-    <from uri="activemqGateway:queue:message.to.datacenter"/>
-    <bean ref="transform" method="transform" beanType="com.redhat.demo.cloudService.EurotechTransformer"/>
-    <to uri="mqtt:kura?host=tcp://broker-sandbox.everyware-cloud.com:1883&amp;publishTopicName=Red-Hat/iotdemo/sensor&amp;userName=p-steiner&amp;password=p-steinerC!oud16"/>
-  </route>
-</camelContext>
+ 	<!-- Route from local MQTT-Broker to local JMS Broker -->
+	<camelContext xmlns="http://camel.apache.org/schema/spring">
+		<propertyPlaceholder location="classpath:org/apache/camel/component/properties/myprop.properties" id="properties"/>
+		<dataFormats><!--Marshals KuraPayload Pojo with Gson annotations into a json string for posting-->
+			<json id="kurapayloadtojson" library="Gson" unmarshalTypeName="com.redhat.demo.iotdemo.cloudService.kura.KuraPayload"/>
+		</dataFormats>
+		<route id="messagesFromCEP">
+			<from uri="activemqGateway:queue:message.to.datacenter"/>
+			<setHeader headerName="Content-Type">
+				<constant>application/json</constant>
+			</setHeader>
+			<bean ref="transform" method="transform" beanType="com.redhat.demo.cloudService.EurotechTransformer"/><!--Convert from internal model to Kura/EC payload model-->
+			<marshal ref="kurapayloadtojson"/><!--And Marshal that out to json for the http post-->
+			<to uri="https4://api-sandbox.everyware-cloud.com/v2/messages/publish?authUsername=p-steiner&amp;authPassword=p-steinerC!oud16&amp;authMethod=Basic"/>
+		</route>
+	</camelContext>
 
 </beans>
