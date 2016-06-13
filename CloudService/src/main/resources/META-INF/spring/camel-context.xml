@@ -37,7 +37,7 @@
 			</setHeader>
 			<bean ref="transform" method="transform" beanType="com.redhat.demo.cloudService.EurotechTransformer"/><!--Convert from internal model to Kura/EC payload model-->
 			<marshal ref="kurapayloadtojson"/><!--And Marshal that out to json for the http post-->
-			<to uri="https4://api-sandbox.everyware-cloud.com/v2/messages/publish?authUsername=p-steiner&amp;authPassword=p-steinerC!oud16&amp;authMethod=Basic"/>
+			<to uri="https4://api-sandbox.everyware-cloud.com/v2/messages/publish?authUsername=p-steiner&amp;authPassword=p-steinerC!oud16&amp;authenticationPreemptive=true"/>
 		</route>
 	</camelContext>
 
