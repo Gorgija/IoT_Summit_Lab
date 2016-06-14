@@ -8,7 +8,7 @@
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
 	<!--Helper Bean to extract data from MQTT Topic and and to Message in csv values  -->
-  	<bean id="myHelper" class="com.redhat.demo.iotdemo.routingService.EurotechTransformer" />
+  	<bean id="myHelper" class="com.redhat.demo.iotdemo.cloudService.EurotechTransformer" />
     
   	<!--Connection to activeMQ Broker running on same system  -->
   	<bean id="activemqGateway" class="org.apache.activemq.camel.component.ActiveMQComponent" >
@@ -20,7 +20,7 @@
       		</bean>
     	</property>
   	</bean>
-  	 
+
   	<!--Initiate access to properties -->
   	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
@@ -35,7 +35,7 @@
 			<setHeader headerName="Content-Type">
 				<constant>application/json</constant>
 			</setHeader>
-			<bean ref="transform" method="transform" beanType="com.redhat.demo.cloudService.EurotechTransformer"/><!--Convert from internal model to Kura/EC payload model-->
+			<bean ref="myHelper" method="transform" beanType="com.redhat.demo.cloudService.EurotechTransformer"/><!--Convert from internal model to Kura/EC payload model-->
 			<marshal ref="kurapayloadtojson"/><!--And Marshal that out to json for the http post-->
 			<to uri="https4://api-sandbox.everyware-cloud.com/v2/messages/publish?authUsername=p-steiner&amp;authPassword=p-steinerC!oud16&amp;authenticationPreemptive=true"/>
 		</route>

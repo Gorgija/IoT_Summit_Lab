@@ -123,20 +123,12 @@
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-test</artifactId>
             <version>${camel.version}</version>
             <scope>test</scope>
         </dependency>
-
-		<dependency>
-		    <groupId>org.eclipse.kura</groupId>
-		    <artifactId>org.eclipse.kura.api</artifactId>
-		    <version>${kura.version}</version>
-		</dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -148,12 +140,11 @@
             <version>${slf4j.version}</version>
             <scope>runtime</scope>
         </dependency>
-        
-        	<dependency>
-	      <groupId>org.apache.camel</groupId>
-	      <artifactId>camel-bindy</artifactId>
-	       <version>${camel.version}</version>
-	    </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-bindy</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
 	    
     </dependencies>
 
