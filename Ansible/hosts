@@ -1,5 +1,5 @@
 [gateways]
-192.168.0.81
+10.0.2.15
 
 [local]
 localhost
