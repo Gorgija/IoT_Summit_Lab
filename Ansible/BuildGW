@@ -6,7 +6,7 @@
         set_fact: user='demo-user'
 
 #      - name: Enable Repo (1/2)
-#        shell: subscription-manager repos --enable=rhel-7-server-extras-rpms
+         shell: subscription-manager repos --enable=rhel-7-server-extras-rpms
 
       - name: Enable Repo (2/2)
         shell: subscription-manager repos --enable=rhel-7-server-optional-rpms
@@ -16,9 +16,9 @@
             state=present
 
       - name: Clone Gateway code from github
-        git: repo=https://github.com/redhat-iot/Virtual_IoT_Gateway.git
+        git: repo=https://github.com/redhatdemocentral/IoT_Summit_Lab.git
              dest=/home/{{user}}/IoT_Summit_Lab
-             version=Virtual-Lab-1
+             version=Summit-2017-IshuChanges
         
       - name: Make {{user}} the owner for all files in in IoT-Summit_Lab directory
         shell: chown {{user}}:{{user}} -R * chdir=/home/{{user}}/IoT_Summit_Lab
@@ -26,7 +26,7 @@
         become_method: sudo
         
       - name: Upload JBoss Fuse
-        shell: cp /home/{{user}}/Downloads/jboss-fuse-full-6.2.1.redhat-084.zip /home/{{user}}/
+        shell: cp /home/{{user}}/Downloads/jboss-fuse-full-6.3.0.redhat-084.zip /home/{{user}}/
         
       - name: Install JBoss Fuse
         unarchive: src=/home/{{user}}/jboss-fuse-full-6.2.1.redhat-084.zip dest=/home/{{user}} copy=no
