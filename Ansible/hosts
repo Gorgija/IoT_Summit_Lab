@@ -1,5 +1,8 @@
-[gateways]
-10.0.2.15
+#[gateways]
+#10.0.2.15
 
 [local]
-localhost
+127.0.0.1
+
+[local:vars]
+ansible_connection=local
