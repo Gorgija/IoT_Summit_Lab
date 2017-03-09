@@ -1,5 +1,6 @@
 - name: Configure a RHEL based Intelligent IoT gateway
-  hosts: localhost
+  hosts: local
+  connection: local
   become: yes
   tasks:
       - name: Set user name
