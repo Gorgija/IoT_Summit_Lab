@@ -12,7 +12,7 @@
         shell: subscription-manager repos --enable=rhel-7-server-optional-rpms
 
       - name: Install various pre-requisites
-        yum: name=wget,git,maven,libreoffice
+        yum: name=wget,maven,libreoffice
             state=present
 
       - name: Clone Gateway code from github
