@@ -16,10 +16,10 @@
         yum: name=wget,maven,libreoffice
             state=present
 
-      - name: Clone Gateway code from github
-        git: repo=https://github.com/redhatdemocentral/IoT_Summit_Lab.git
-             dest=/home/{{user}}/IoT_Summit_Lab
-             version=Summit-2017-IshuChanges
+#      - name: Clone Gateway code from github
+#        git: repo=https://github.com/redhatdemocentral/IoT_Summit_Lab.git
+#             dest=/home/{{user}}/IoT_Summit_Lab
+#             version=Summit-2017-IshuChanges
         
       - name: Make {{user}} the owner for all files in in IoT-Summit_Lab directory
         shell: chown {{user}}:{{user}} -R * chdir=/home/{{user}}/IoT_Summit_Lab
