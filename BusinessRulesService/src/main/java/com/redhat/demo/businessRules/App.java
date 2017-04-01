@@ -38,7 +38,7 @@ public class App
 		
 		Producer producer = new Producer(targetBrokerUID, targetBrokerPassword, targetQueue, targetAMQBroker);
 	
-		BRMSServer brmsServer = new BRMSServer();
+		BRMSRunner brmsServer = new BRMSRunner();
 		
 		while ( true ) {
 			messageFromQueue = consumer.run(2000);		
@@ -59,7 +59,7 @@ public class App
 	            System.out.println("Device-ID   = " + event.getDeviceID());
 	            System.out.println("Payload     = " + event.getPayload());
 	         
-            	event = brmsServer.insert( event);
+            	event = brmsServer.fireRules(event);
             	
             	System.out.println("Result      = " + event.getErrorCode());
             	System.out.println("----------------------");

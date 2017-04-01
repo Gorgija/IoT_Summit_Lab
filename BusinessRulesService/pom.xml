@@ -19,56 +19,53 @@
       <maven.compiler.target>1.6</maven.compiler.target>
       <maven.compiler.source>1.6</maven.compiler.source>
       
-      <version.org.kie>6.3.0.Final-redhat-5</version.org.kie>
-      
-      <version.org.infinispan>6.4.0.Final-redhat-4</version.org.infinispan>
+      <version.org.kie>6.5.0.Final-redhat-5</version.org.kie>
   </properties>
   
    <repositories>
     	<repository>
-			  <id>jboss-ga-repository</id>
-	          <url>http://maven.repository.redhat.com/techpreview/all</url>
-	          <releases>
-	            	<enabled>true</enabled>
-	          </releases>
-	          <snapshots>
-	            	<enabled>false</enabled>
-	          </snapshots>
-	    </repository>    
-	    <repository>
-	          <id>jboss-public-repository</id>
-	          <url>http://repository.jboss.org/nexus/content/repositories/public/</url>
-	          <releases>
-	            	<enabled>true</enabled>
-	          </releases>
-	          <snapshots>
-	            	<enabled>false</enabled>
-	          </snapshots>
-        </repository>
+			<id>release.fusesource.org</id>
+			<name>Red Hat GA</name>
+			<url>https://maven.repository.redhat.com/ga</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
         <repository>
 		    <id>paho-mqtt-client</id>
 		    <name>Paho MQTT Client</name>
 		    <url>https://repo.eclipse.org/content/repositories/paho-releases/</url>
 		</repository>
+		 <repository>
+	        <id>localrepository</id>
+	        <releases>
+	        	<enabled>true</enabled>
+	        	<updatePolicy>always</updatePolicy>
+	      	</releases>
+	        <url>file:///home/psteiner/.m2/repository</url>
+	     </repository>
  	</repositories>
   
   <dependencies>
+  		<dependency>
+			<groupId>com.redhat.demo.businessRules</groupId>
+			<artifactId>dataset</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+  
+  		<!-- BRMS dependencies -->
   		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-kie-services</artifactId>
 			<version>${version.org.kie}</version>
 		</dependency>
   
-  		<!-- BPM dependencies -->
-  		<dependency>
-      		<groupId>org.kie.remote</groupId>
-      		<artifactId>kie-remote-client</artifactId>
-      		<version>${version.org.kie}</version>
-    	</dependency>
-  
   		<dependency>
 			<groupId>org.drools</groupId>
-			<artifactId>drools-decisiontables</artifactId>
+			<artifactId>drools-workbench-models-guided-dtable</artifactId>
 			<version>${version.org.kie}</version>
 		</dependency>
   
@@ -91,21 +88,6 @@
 		   <version>0.4.0</version>
 		</dependency>
 		
-		 <!-- Import the infinispan core -->
-        <dependency>
-            <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-core</artifactId>
-            <version>${version.org.infinispan}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <!-- Import the Infinispan client hotrod -->
-        <dependency>
-            <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-client-hotrod</artifactId>
-            <version>${version.org.infinispan}</version>
-            <scope>compile</scope>
-        </dependency>
   </dependencies>
   
   <build>

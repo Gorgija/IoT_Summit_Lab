@@ -6,36 +6,53 @@
       - name: Set user name
         set_fact: user='demo-user'
 
-      - name: Enable Repo (1/2)
-        shell: subscription-manager repos --enable=rhel-7-server-extras-rpms
-
-      - name: Enable Repo (2/2)
-        shell: subscription-manager repos --enable=rhel-7-server-optional-rpms
-
       - name: Install various pre-requisites
-        yum: name=wget,maven,libreoffice
+        yum: name=wget,maven,git,java-1.8.0-openjdk-devel,unzip
             state=present
 
-#      - name: Clone Gateway code from github
-#        git: repo=https://github.com/redhatdemocentral/IoT_Summit_Lab.git
-#             dest=/home/{{user}}/IoT_Summit_Lab
-#             version=Summit-2017-IshuChanges
-        
       - name: Make {{user}} the owner for all files in in IoT-Summit_Lab directory
         shell: chown {{user}}:{{user}} -R * chdir=/home/{{user}}/IoT_Summit_Lab
         become: yes
         become_method: sudo
-        
-      - name: Upload JBoss Fuse
-        shell: cp /home/{{user}}/Downloads/jboss-fuse-karaf-6.3.0.redhat-187.zip /home/{{user}}/
-        
+
       - name: Install JBoss Fuse
-        unarchive: src=/home/{{user}}/jboss-fuse-karaf-6.3.0.redhat-187.zip dest=/home/{{user}} copy=no
-        
+        unarchive: src=/home/{{user}}/Downloads/jboss-fuse-karaf-6.3.0.redhat-187.zip dest=/home/{{user}} copy=no
+
       - name: Create link for fuse
-        shell: ln -s jboss-fuse-6.3.0.redhat-187 fuse chdir=/home/{{user}}
-        
+        shell: ln -sf jboss-fuse-6.3.0.redhat-187 fuse chdir=/home/{{user}}
+
+      - name: Install JBoss EAP
+        unarchive: src=/home/{{user}}/Downloads/jboss-eap-7.0.0.zip dest=/home/{{user}} copy=no
+
+      - name: Install JBoss EAP Patch
+        shell: /home/{{user}}/jboss-eap-7.0/bin/jboss-cli.sh "patch apply /home/{{user}}/Downloads/jboss-eap-7.0.4-patch.zip"
+
+      - name: Copy JBoss EAP Config for start as service
+        shell: cp ../config/jboss-eap.conf /etc/default
+
+      - name: Copy JBoss EAP startup script from install directory
+        shell: cp /home/{{user}}/jboss-eap-7.0/bin/init.d/jboss-eap-rhel.sh /etc/init.d/jboss-eap-rhel.sh
+
+      - name: Give execute permission on start-script
+        shell: chmod +x /etc/init.d/jboss-eap-rhel.sh
+
+      - name: Add the new jboss-eap-rhel.sh service to list of automatically started services
+        shell: chkconfig --add jboss-eap-rhel.sh
+
+      - name: Install JBoss BRMS
+        unarchive: src=/home/{{user}}/Downloads/jboss-brms-6.4.0.GA-deployable-eap7.x.zip dest=/home/{{user}} copy=no
+
+      - name: Create JBoss BRMS user
+        shell: /home/{{user}}/jboss-eap-7.0/bin/add-user.sh -a -r ApplicationRealm -u {{user}} -p change12_me -ro analyst,admin,appraiser,broker,manager,kie-server,rest-all --silent
+
+      - name: Copy JBoss BRMS project
+        command: cp -R ../config/niogit /home/{{user}}/jboss-eap-7.0/.niogit
+
       - name: Make {{user}} the owner for all files in {{user}} directory
         shell: chown {{user}}:{{user}} -R * chdir=/home/{{user}}
         become: yes
         become_method: sudo
+
+      - name: Start new jboss-eap-rhel.sh service
+        shell: service jboss-eap-rhel start
+

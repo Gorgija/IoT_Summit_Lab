@@ -98,7 +98,7 @@ Let's analyze this long string:
  and has two more parts, which we subscribe to via wildcards
  * *userName=admin&amp;password=change12_me* defines the username and password which
  this receiver uses to authenticate to the MQTT Broker
- * *&amp;reconnectBackOffMultiplier=1* defines the Exponential backoff be used between reconnect attempts. Set to 1 to disable exponential backoff.
+ * *reconnectBackOffMultiplier=1* defines the Exponential backoff be used between reconnect attempts. Set to 1 to disable exponential backoff.
 
 ==== Changing the CSV message to a Java Object
 In this step we will introduce the capabilities needed to
@@ -120,6 +120,8 @@ In the properties of the newly created `Bean`, please define the following value
  * *Method* to `enhanceMessage`
  * *ID* to `myHelper`
  * *Ref* to `myHelper`
+
+You can safely ignore the other properties, like *Multi Parameter* and others.
 
 image:images/defineBean.png[]
 
@@ -181,9 +183,11 @@ image:images/wiringDone.png[]
 
 ==== Adding the final send to the flow
 Last thing to do is to configure the sending node, to do this please select
-the `direct:to` node and change the property `Uri` to `activemqGateway:queue:message.to.rules`  as shown in the image below.
+the `direct:to` node and change the property `Uri` to `activemqGateway:queue:message.to.rules`  as shown in the image below. 
 
 image:images/configureSend.png[]
+
+Here again, it's OK to ignore the other parameters, like *Pattern*, as they are not needed for our example.
 
 ==== One more thing
 To show the flexibility of building Camel routes, we will introduce one more

@@ -49,35 +49,63 @@ After completing the install precedure, register and upgrade your RHEL installat
 ```
 == Provisioning the Gateway
 === Pre-Requisite
--Install git
+
+==== Install git
 
   [user@localhost ~]$ sudo yum install git
 
--Install Ansible
+==== Install Ansible
 
   [user@localhost ~]$ rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
   [user@localhost ~]$ sudo yum install ansible
-  
--Download JBOSS Fuse 6.3.0 from the https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?product=jboss.fuse&downloadType=distributions[Red Hat Customer Portal] and save it in the Downloads folder
+
+==== Download JBOSS Fuse 6.3.0
+
+Please download https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=46901[Red Hat JBoss Fuse V6.3.0]
+and save it in the `Downloads` folder
 
 image:images/download_fuse.png[]
 
--Download the provisioning script
+==== Download JBoss BRMS V6.4.0
 
-  [user@localhost ~]$ git clone -b Summit-2017-IshuChanges https://github.com/RedHatDemoCentral/IoT_Summit_Lab.git
+Please download https://www.redhat.com/en/technologies/jboss-middleware/business-rules[JBoss BRMS]
+and it's pre-requisites from the Red Hat Customer portal and place all three files
+into the `Downloads` folder
 
- * Update the Ansible playbook BuildGW file [Virtual-IoT-Gateway/Ansible/BuildGW] for the username for your gateway: *set_fact: user='user name'*
- 
+ * https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=43891[JBoss EAP V7.0.0]
+ * https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=49331[JBoss EAP V7.0.4 Patch]
+ * https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=48291[Red Hat JBoss BRMS 6.4.0 Deployable for EAP 7]
+
+==== Configure the Deployment Script
+
+To customize the installation script to your needs, please update the file `Ansible/BuildGW`
+and change the following value to the name of the user, who should be running the lab:
+
+ set_fact: user='user name'
+
 _Note: For the lab, we're using username = 'demo-user' and password = 'change12_me'._
 
- * Launch the Ansible playbook by entering the following commands:
-  
+==== Deploy Lab Environment
+
+There are a few steps that need to be performed, before we can proceed with
+running the lab.
+
+====== Launch the Ansible playbook by entering the following commands:
+
   [user@localhost ~]$ cd Virtual_IoT_Gateway/Ansible
   [user@localhost ~]$ ansible-playbook BuildGW --ask-become-pass
-  
-*Let the Ansible run through the tasks in the playbook. Once Ansible is finished, we're ready to start work directly on the Gateway*
+
+Let the Ansible run through the tasks in the playbook. Once Ansible is finished, we're ready to start work directly on the Gateway
 
 _Note: If you want to provision the Gateway remotely, you will need to update the host file [Ansible/host] with IP address of the Gateway and place your public key on the Gateway https://github.com/redhat-iot/Virtual_IoT_Gateway/tree/Virtual-Lab-1-Host/Ansible[see details]_
+
+
+====== Build supporting classes
+Please run the following commands to build a Java Library, which is needed
+by some of the other elements of this lab
+
+ [user@localhost ~]$ cd IoT_Summit_Lab/DataSet
+ [user@localhost ~]$ mvn clean install
 
 === Red Hat JBoss Developer Studio
 Red Hat JBoss Developer Studio ( JBDS ) is the Eclipse based tooling
